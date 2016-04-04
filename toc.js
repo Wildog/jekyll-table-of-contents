@@ -61,18 +61,18 @@
         $(header).addClass('top-level-header').after(return_to_top);
       }
       if (this_level === level) // same level as before; same indenting
-        html += "<li><a href='#" + fixedEncodeURIComponent(header.id) + "'>" + header.innerHTML + "</a>";
+		html += "<li><a class='anchor-link' href='javascript:void(0)' anchor='" + fixedEncodeURIComponent(header.id) + "'>" + header.innerHTML + "</a>"
       else if (this_level <= level){ // higher level than before; end parent ol
         for(i = this_level; i < level; i++) {
           html += "</li></"+settings.listType+">"
         }
-        html += "<li><a href='#" + fixedEncodeURIComponent(header.id) + "'>" + header.innerHTML + "</a>";
+		html += "<li><a class='anchor-link' href='javascript:void(0)' anchor='" + fixedEncodeURIComponent(header.id) + "'>" + header.innerHTML + "</a>"
       }
       else if (this_level > level) { // lower level than before; expand the previous to contain a ol
         for(i = this_level; i > level; i--) {
           html += "<"+settings.listType+"><li>"
         }
-        html += "<a href='#" + fixedEncodeURIComponent(header.id) + "'>" + header.innerHTML + "</a>";
+		html += "<li><a class='anchor-link' href='javascript:void(0)' anchor='" + fixedEncodeURIComponent(header.id) + "'>" + header.innerHTML + "</a>"
       }
       level = this_level; // update for the next one
     });
@@ -85,5 +85,16 @@
     }
 
     render[settings.showEffect]();
+
+    function scrollToAnchor(anchorId) {
+        var anchor = $(".clickable-header[id='" + anchorId + "']");
+        $("html,body").animate({
+            scrollTop: anchor.offset().top
+        }, "slow");
+    }
+
+    $(".anchor-link").click(function() {
+        scrollToAnchor($(this).attr("anchor"));
+    });
   };
 })(jQuery);
